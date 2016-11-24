@@ -1,0 +1,40 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+#about {
+    padding-top: 48px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #507cd8;
+}
+.footer p {
+    line-height: 60px;
+    color: white;
+}
+.footer a {
+    color: #efb22e;
+    text-decoration: none;
+}
+form.search {
+    background-color:green; width:400px; padding:20px;
+}
+div.form-div {
+    //margin-left: 150pt;
+}
+form.addSong {
+    background-color:#DC143C; padding:20px;
+    background-image: url('images/tree.jpg');
+}
+form.addSong label { font-weight: bold; font-size: 12px; color: antiquewhite; }

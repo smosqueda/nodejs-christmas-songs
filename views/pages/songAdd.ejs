@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../partials/head %>
+<body>
+<% include ../partials/nav %>
+<section name="jumbotron" >
+ <div class="jumbotron text-center">
+     
+    <h2>Add Christmas Song to Library</h2>
+
+    <div class='form-div'>
+        <form action='/song/insert' method='post' class='addSong'>
+            <label>Title:</label> <br/><input type="text" name="title" size="55" height="20px"/> <br/>
+            <label>Chorus:</label> <br/><textarea name="chorus" rows="4" cols="60"></textarea><br/>
+            <label>Song Body:</label> <br/><textarea name="body" rows="15" cols="60"></textarea><br/>
+            <input type="submit" name="submit"/>
+        </form>
+    </div>
+     
+ </div>
+ </section>
+<% include ../partials/footer %>
+<% include ../partials/script %>
+</body>
+</html>

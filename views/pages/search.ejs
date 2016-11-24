@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../partials/head %>
+<body>
+<% include ../partials/nav %>
+<section name="jumbotron" >
+    <div style="margin-top:150pt">
+        <center>
+            <form action="/song/search" type="get" class="search">
+            <span style="color:white; font-size:14px; font-family:Arial,sans-serif; text-align:center; text-transform:uppercase;">Search Song Text:</span> <br/>
+                <div style="padding:10px">
+                    <input type="text" name="keyword" size="35" height="40px"/> 
+                </div><br/>
+            <input type="submit" name="submit"/>
+            </form>
+        
+        <% var list; %>
+        <% if (songs) { %>
+        <ul style="list-style:none; display: inline">
+        <% songs.forEach(function(song) {
+                /*var title = song.title;
+                var key = title.replace(/[\s]/g,'-');
+                if (!list[key]) {
+                   document.write("old key<br/>");
+                   
+                } else {
+                    document.write("new key<br/>");
+                    list[key] = song;
+                }*/
+          %>
+          <li><%= song.title %></li>
+        <% }); %>
+        </ul>
+        <% } %>
+            
+        </center>
+        
+    </div>
+ </section>
+<% include ../partials/footer %>
+<% include ../partials/script %>
+</body>
+</html>
