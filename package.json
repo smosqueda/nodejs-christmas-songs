@@ -4,7 +4,7 @@
   "description": "Search christmas song lyrics",
   "main": "app.js",
   "scripts": {
-    "test": "start"
+    "start": "node app.js"
   },
   "keywords": [
     "christmas",
