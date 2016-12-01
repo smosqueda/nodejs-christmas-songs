@@ -48,42 +48,48 @@ var findDocuments = function(db, match, callback) {
   }
 }
 
-var findDocumentById = function(db, matchId, callback) {
+var findDocumentByTitle = function(db, matchTitle, callback) {
   // Get the document from songs collection
   var collection = db.collection('songs');
-  if (matchId != undefined && matchId.length > 0 ) {
+  if (matchTitle != undefined && matchTitle.length > 0 ) {
       //var searchPhrase = '/.*'+match+'.*/'; ///.*m.*/
-      var searchPhrase = '"'+matchId+'"';
-      console.log("searching by matchId: "+matchId);
-      var o_id = new ObjectId(matchId);
-      console.log("GONNA try for doctest");
-    var docTest = collection.find({_id : "5834f96c833415c6331482e0"});
-    //var docTest = collection.find({_id : searchPhrase});
+      var searchPhrase = '"'+matchTitle+'"';
+      var the_title = matchTitle;
+      console.log("Before the_title: "+the_title);
+      if (matchTitle.indexOf("-") > - 1) {
+          the_title = matchTitle.replaceAll("-", " ");
+      }
+      console.log("searching by matchTitle: "+the_title);
+      //var o_id = new ObjectId(matchTitle);
+    //var docTest = collection.find({_id : ObjectId("5834f96c833415c6331482e0")});
+    //var docTest = collection.find({_id:o_id});
+     // var docTest = collection.find({"id":ObjectId("583f9d58db2cec0470413c16")});
     //console.log("docTest is NOW: "+docTest[0].title);
-      if (docTest == null || docTest == undefined) {
+      /*if (docTest == null || docTest == undefined) {
           console.log("docs is undefined, SORRY!!!!!!");
       } else {
           console.log("docs is NOT undefined, YEAHHHH!!!!!!");
-          console.log("LENGTH: " + docTest.length);
+          console.log("DOCUMENT: " + JSON.stringify(docTest, null, 4));
           
           for (var i = 0, len = docTest.length; i < len; i++) {
               console.log("song title: "+docTest[i].title);
           }
-      }
+      }*/
       
- //    collection.find({"_id": o_id}, function(err, doc) {
-    collection.find({_id : searchPhrase}, function(err, docs) {
+   // collection.find({_id:o_id}, function(err, doc) {
+   // collection.find({"_id":ObjectId("583f9d58db2cec0470413c16")}, function(err, doc) {
+    collection.findOne({title: {$regex: the_title, $options: "i"} }, function(err, doc) {
         assert.equal(err, null);
         console.log("Found the following record");
-        //console.log("title IS "+ docs.title);
-        callback(docs);
+        console.log("title IS "+ doc.title);
+        callback(doc);
       });
   } else {
       console.log("empty search happening");
-      collection.find({}).toArray(function(err, docs) {
+      collection.find({}).toArray(function(err, doc) {
         assert.equal(err, null);
-        console.log(docs);
-        callback(docs);
+        console.log(doc);
+        callback(doc);
       });
   }
 }
@@ -160,20 +166,20 @@ module.exports = function(app) {
     MongoClient.connect(url, function(err, db) {
       assert.equal(null, err);
       console.log("Connected successfully to server");
-      findDocumentById(db, match, function(docs) { 
+      findDocumentByTitle(db, match, function(doc) { 
             console.log("INSIDE search for match for "+match);
             db.close();
           
-            console.log("size ? of song listing: "+docs);
-            if (docs == null || docs == undefined) {
-                res.render('pages/songSelected', { songs: [] });
-                    //title : "Database Trouble, Sorry.", chorus : "", body : "", credits: ""});
+            //console.log("size ? of song listing: "+docs);
+            if (doc == null || doc == undefined) {
+                res.render('pages/songSelected', { //songs: [] });
+                    title : "Error", chorus : "", body : "", credits: ""});
             } else {
                 console.log("use the first element of the result, which just 1 anyway")
                 //var doc = docs[1];
                 
-                res.render('pages/songSelected', { songs: docs });
-                    //title : doc.title, chorus : doc.chorus, body : doc.body, credits: doc.credits });
+                res.render('pages/songSelected', { //songs: docs });
+                    title : doc.title, chorus : doc.chorus, body : doc.body, credits: doc.credits });
                 
             }
       });         
