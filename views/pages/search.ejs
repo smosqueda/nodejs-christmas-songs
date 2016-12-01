@@ -27,8 +27,11 @@
                     document.write("new key<br/>");
                     list[key] = song;
                 }*/
+                var d_title = song.title;
+                var s_title = d_title.replace(/\s/g, "-").toLowerCase();
+                var id = song._id;
           %>
-            <li><a href="/song/showone?songid=<%= song._id %>"><%= song.title %> id:[<%= song._id %>]</a></li>
+            <li><a href="/song/showone?songid=<%= s_title %>"><%= song.title %> id:[<%= song._id %>]</a></li>
         <% }); %>
         </ul>
         <% } %>
