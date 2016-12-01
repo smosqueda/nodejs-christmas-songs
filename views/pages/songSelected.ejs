@@ -9,16 +9,16 @@
     <h2>Your selected Christmas Song:</h2>
 
     <div style="margin-left:25pt;">
-        <% if (songs.size > 0) { %>
+        <% if (title != "Error") { %>
         <h2>Song:</h2>      
         <p style="text-align:left">
-            <% songs.forEach(function(song) { %>
+            <% //songs.forEach(function(song) { %>
             
-                <b>Title:</b>  <%= song.title %> <br/>
-                <b>Chorus:</b> <%= song.chorus %><br/>
-                <b>Song Body:</b> <%= song.body %><br/>
+                <b>Title:</b>  <%= title %> <br/>
+                <b>Chorus:</b> <%= chorus %><br/>
+                <b>Song Body:</b> <%= body %><br/>
             
-            <% }); %>
+            <% //}); %>
         </p>
         <% } else { %>
           <b>Sorry no results from database.</b>
