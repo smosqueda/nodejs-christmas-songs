@@ -3,6 +3,8 @@
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
+var ObjectId = require('mongodb').ObjectId;
+
 // Connection URL
 var url = 'mongodb://localhost:27017/christmas-songs';
 
@@ -46,6 +48,45 @@ var findDocuments = function(db, match, callback) {
   }
 }
 
+var findDocumentById = function(db, matchId, callback) {
+  // Get the document from songs collection
+  var collection = db.collection('songs');
+  if (matchId != undefined && matchId.length > 0 ) {
+      //var searchPhrase = '/.*'+match+'.*/'; ///.*m.*/
+      var searchPhrase = '"'+matchId+'"';
+      console.log("searching by matchId: "+matchId);
+      var o_id = new ObjectId(matchId);
+      console.log("GONNA try for doctest");
+    var docTest = collection.find({_id : "5834f96c833415c6331482e0"});
+    //var docTest = collection.find({_id : searchPhrase});
+    //console.log("docTest is NOW: "+docTest[0].title);
+      if (docTest == null || docTest == undefined) {
+          console.log("docs is undefined, SORRY!!!!!!");
+      } else {
+          console.log("docs is NOT undefined, YEAHHHH!!!!!!");
+          console.log("LENGTH: " + docTest.length);
+          
+          for (var i = 0, len = docTest.length; i < len; i++) {
+              console.log("song title: "+docTest[i].title);
+          }
+      }
+      
+ //    collection.find({"_id": o_id}, function(err, doc) {
+    collection.find({_id : searchPhrase}, function(err, docs) {
+        assert.equal(err, null);
+        console.log("Found the following record");
+        //console.log("title IS "+ docs.title);
+        callback(docs);
+      });
+  } else {
+      console.log("empty search happening");
+      collection.find({}).toArray(function(err, docs) {
+        assert.equal(err, null);
+        console.log(docs);
+        callback(docs);
+      });
+  }
+}
 var insertDocument = function(db, song, callback) {
   // Get the documents collection
   var collection = db.collection('songs');
@@ -99,6 +140,45 @@ module.exports = function(app) {
     console.log("gonna search songs");
     
     res.render('pages/search',{ songs : [] });
+     
+ });
+    
+ app.get('/song/showone', function (req, res) {
+    console.log("gonna search songs");
+     
+    //var match = req.body.songid;
+    var song = req;
+    var match = "";
+    var songid = song.query.songid;
+    console.log("------------------------");
+    console.log("songid is: "+songid);
+    console.log("------------------------");
+    if (songid != undefined) {
+      match = songid;
+    }  
+    
+    MongoClient.connect(url, function(err, db) {
+      assert.equal(null, err);
+      console.log("Connected successfully to server");
+      findDocumentById(db, match, function(docs) { 
+            console.log("INSIDE search for match for "+match);
+            db.close();
+          
+            console.log("size ? of song listing: "+docs);
+            if (docs == null || docs == undefined) {
+                res.render('pages/songSelected', { songs: [] });
+                    //title : "Database Trouble, Sorry.", chorus : "", body : "", credits: ""});
+            } else {
+                console.log("use the first element of the result, which just 1 anyway")
+                //var doc = docs[1];
+                
+                res.render('pages/songSelected', { songs: docs });
+                    //title : doc.title, chorus : doc.chorus, body : doc.body, credits: doc.credits });
+                
+            }
+      });         
+         
+    });
      
  });
 
