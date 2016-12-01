@@ -28,7 +28,7 @@
                     list[key] = song;
                 }*/
           %>
-          <li><%= song.title %></li>
+            <li><a href="/song/showone?songid=<%= song._id %>"><%= song.title %> id:[<%= song._id %>]</a></li>
         <% }); %>
         </ul>
         <% } %>
