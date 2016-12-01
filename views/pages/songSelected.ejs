@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<% include ../partials/head %>
+<body>
+<% include ../partials/nav %>
+<section name="jumbotron" >
+ <div class="jumbotron text-center">
+     
+    <h2>Your selected Christmas Song:</h2>
+
+    <div style="margin-left:25pt;">
+        <% if (songs.size > 0) { %>
+        <h2>Song:</h2>      
+        <p style="text-align:left">
+            <% songs.forEach(function(song) { %>
+            
+                <b>Title:</b>  <%= song.title %> <br/>
+                <b>Chorus:</b> <%= song.chorus %><br/>
+                <b>Song Body:</b> <%= song.body %><br/>
+            
+            <% }); %>
+        </p>
+        <% } else { %>
+          <b>Sorry no results from database.</b>
+        <% } %>
+        
+    </div>
+     
+ </div>
+ </section>
+<% include ../partials/footer %>
+<% include ../partials/script %>
+</body>
+</html>
